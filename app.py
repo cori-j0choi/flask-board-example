@@ -81,13 +81,41 @@ def logout():
     flash('로그아웃 되었습니다.')
     return redirect(url_for('home'))
 
-@app.route('/user_list')
+@app.route('/user_list', methods=['GET', 'POST'])
 def user_list():
     if session.get('user') != 'admin' or request.remote_addr != '127.0.0.1':
         flash('관리자(로컬호스트)만 접근할 수 있습니다.')
         return redirect(url_for('home'))
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        if not username or not password:
+            flash('아이디와 비밀번호를 입력하세요.')
+        elif User.query.filter_by(username=username).first():
+            flash('이미 존재하는 사용자 이름입니다.')
+        else:
+            hashed_password = generate_password_hash(password)
+            new_user = User(username=username, password=hashed_password)
+            db.session.add(new_user)
+            db.session.commit()
+            flash('사용자가 추가되었습니다!')
+        return redirect(url_for('user_list'))
     users = User.query.all()
     return render_template('user_list.html', users=users, user=session.get('user'))
+
+@app.route('/user_delete/<int:user_id>', methods=['POST'])
+def user_delete(user_id):
+    if session.get('user') != 'admin' or request.remote_addr != '127.0.0.1':
+        flash('관리자(로컬호스트)만 접근할 수 있습니다.')
+        return redirect(url_for('home'))
+    user = User.query.get_or_404(user_id)
+    if user.username == 'admin':
+        flash('관리자 계정은 삭제할 수 없습니다.')
+        return redirect(url_for('user_list'))
+    db.session.delete(user)
+    db.session.commit()
+    flash('사용자가 삭제되었습니다!')
+    return redirect(url_for('user_list'))
 
 @app.route('/board', methods=['GET', 'POST'])
 def board():
