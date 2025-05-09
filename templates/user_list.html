@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}사용자 리스트 - Flask 웹사이트{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card p-4">
+      <h2 class="mb-3">사용자 리스트</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>아이디</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for u in users %}
+          <tr>
+            <td>{{ u.id }}</td>
+            <td>{{ u.username }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <a href="{{ url_for('home') }}" class="btn btn-outline-secondary mt-2">홈으로</a>
+    </div>
+  </div>
+</div>
+{% endblock %} 

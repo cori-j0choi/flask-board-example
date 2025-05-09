@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}홈 - Flask 웹사이트{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card p-4">
+      <h2 class="mb-3">Flask로 만든 웹사이트</h2>
+      <p>이 웹사이트는 Flask 프레임워크를 사용하여 만들어졌습니다.</p>
+      <p>시작하기 위해 다음 단계를 따라주세요:</p>
+      <ul>
+        <li>Flask 설치하기</li>
+        <li>애플리케이션 실행하기</li>
+        <li>웹사이트 탐색하기</li>
+      </ul>
+      <div class="d-flex flex-wrap gap-2 mt-3">
+        <a href="{{ url_for('register') }}" class="btn btn-main">회원가입</a>
+        <a href="{{ url_for('board') }}" class="btn btn-outline-primary">게시판</a>
+        <a href="{{ url_for('photo_board') }}" class="btn btn-outline-success">사진 게시판</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}사진 게시판 - Flask 웹사이트{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-10">
+    <div class="card p-4 mb-4">
+      <h2 class="mb-3">사진 게시판</h2>
+      <form method="POST" action="{{ url_for('photo_board') }}" enctype="multipart/form-data" class="mb-4">
+        <div class="row g-2 align-items-end">
+          <div class="col-md-3">
+            <input type="text" id="author" name="author" class="form-control" placeholder="작성자" required>
+          </div>
+          <div class="col-md-3">
+            <input type="text" id="title" name="title" class="form-control" placeholder="제목" required>
+          </div>
+          <div class="col-md-4">
+            <input type="file" id="photo" name="photo" class="form-control" accept="image/*" required>
+          </div>
+          <div class="col-md-2 d-grid">
+            <button type="submit" class="btn btn-main">사진 등록</button>
+          </div>
+        </div>
+      </form>
+      <hr>
+      <div class="row g-4">
+        {% for post in posts %}
+          <div class="col-md-4 col-lg-3">
+            <div class="card h-100 shadow-sm">
+              <img src="{{ url_for('static', filename='uploads/' ~ post.filename) }}" class="card-img-top" alt="{{ post.title }}" style="height:180px;object-fit:cover;">
+              <div class="card-body">
+                <div class="card-title fw-bold">{{ post.title }}</div>
+                <div class="card-text text-muted small">작성자: {{ post.author }}<br>작성일: {{ post.created_at.strftime('%Y-%m-%d %H:%M') }}</div>
+              </div>
+            </div>
+          </div>
+        {% else %}
+          <p class="text-center text-muted">아직 사진이 없습니다.</p>
+        {% endfor %}
+      </div>
+      <a href="{{ url_for('home') }}" class="btn btn-outline-secondary mt-4">홈으로</a>
+    </div>
+  </div>
+</div>
+{% endblock %} 
