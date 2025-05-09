@@ -83,8 +83,8 @@ def logout():
 
 @app.route('/user_list')
 def user_list():
-    if session.get('user') != 'admin':
-        flash('관리자만 접근할 수 있습니다.')
+    if session.get('user') != 'admin' or request.remote_addr != '127.0.0.1':
+        flash('관리자(로컬호스트)만 접근할 수 있습니다.')
         return redirect(url_for('home'))
     users = User.query.all()
     return render_template('user_list.html', users=users, user=session.get('user'))
@@ -137,4 +137,4 @@ def photo_board():
     return render_template('photo_board.html', posts=posts, user=session.get('user'))
 
 if __name__ == '__main__':
-    app.run(debug=True) 
+    app.run(debug=True)
